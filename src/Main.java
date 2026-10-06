@@ -3,168 +3,507 @@ import java.util.Random;
 
 
 public class Main {
-//TODO be able to filter the vegetarian recipes vs the non vegetarian recipes
+
+
     public static void main(String[] args) {
+
+
         Scanner input = new Scanner(System.in);
-       // ArrayList<Recipe> Recipes = new ArrayList<>();
 
-        Recipe R1 = new Recipe("Banana Oat Muffins", "North American Influence", 10, 2, true);
-        Recipe R2 = new Recipe("Lentil and Duck Salad", "French", 15, 2, false);
-        Recipe R3 = new Recipe("Nourishing Detox Soup", "French", 15, 2, false);
 
-        Recipe.recipeCookBook.add(R1);
-        Recipe.recipeCookBook.add(R2);
-        Recipe.recipeCookBook.add(R3);
+        // Create starter recipes
+        Recipe R1 = new Recipe("Banana Oat Muffins",
+                "North American Influence", 10, 2, true);
+
+
+        Recipe R2 = new Recipe("Lentil and Duck Salad",
+                "French", 15, 2, false);
+
+
+        Recipe R3 = new Recipe("Nourishing Detox Soup",
+                "French", 15, 2, false);
+
+
+        // Create the Cookbook
+        Cookbook C1 = new Cookbook("Cookbook 1", R1);
+
+
+        // Add starter recipes to the Cookbook
+        C1.addRecipe(R1);
+        C1.addRecipe(R2);
+        C1.addRecipe(R3);
+
+
         boolean running = true;
 
-        //this makes the program choose a random recipe from the recipe arrayList (random index from the list)
-        Random random =  new Random();
-        int randomIndex = random.nextInt(Recipe.recipeCookBook.size());
-        Recipe featuredRecipe = Recipe.recipeCookBook.get(randomIndex);
 
-        Cookbook C1 = new Cookbook("Cookbook 1", featuredRecipe );
+        // Choose a random featured recipe
+        Random random = new Random();
+        int randomIndex = random.nextInt(C1.getRecipes().size());
+        Recipe featuredRecipe = C1.getRecipes().get(randomIndex);
 
-        System.out.println(C1);
+
+        System.out.println("Featured Recipe: " + featuredRecipe);
+        System.out.println();
+
+
+
 
         while (running) {
+
 
             System.out.println("What would you like to do? (Input a number)");
             System.out.println("1 ~ Make a new recipe");
             System.out.println("2 ~ View recipes");
             System.out.println("3 ~ Search for an existing recipe");
-            System.out.println("4 ~ Exit");
+            System.out.println("4 ~ Modify a recipe");
+            System.out.println("5 ~ Remove a recipe");
+            System.out.println("6 ~ Exit");
+
 
             int choice;
 
+
+            // Menu input validation
             while (!input.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a number.");
                 input.next();
             }
 
+
             choice = input.nextInt();
             input.nextLine();
 
+
+
+
             switch (choice) {
 
+
+
+
+
+
                 case 1:
+
 
                     System.out.println("What do you want to call your recipe?: ");
                     String name = input.nextLine().trim();
 
+
                     System.out.println("What cuisine is it?: ");
                     String cuisine = input.nextLine().trim();
 
-                    //prepMinutes
+
+                    // Prep minutes
                     System.out.println("How many minutes of prep?: ");
+
+
                     while (!input.hasNextInt()) {
                         System.out.println("Invalid input. Please enter a number.");
-                        input.next().trim();
+                        input.next();
                     }
+
+
                     int prepMinutes = input.nextInt();
 
-                    //servings
+
+
+
+                    // Servings
                     System.out.println("How many servings?: ");
+
+
                     while (!input.hasNextInt()) {
                         System.out.println("Invalid input. Please enter a number.");
-                        input.next().trim();
+                        input.next();
                     }
+
+
                     int servings = input.nextInt();
 
-                    //vegetarian?
+
+
+
+                    // Vegetarian
                     System.out.println("Is your recipe vegetarian?: (true/false)");
+
+
                     while (!input.hasNextBoolean()) {
-                        System.out.println("Invalid input. Please enter a true or false.");
-                        input.next().trim();
+                        System.out.println("Invalid input. Please enter true or false.");
+                        input.next();
                     }
+
+
                     boolean isVegetarian = input.nextBoolean();
+                    input.nextLine();
 
-                    //recipe making
-                    Recipe existingRecipe = R1.searchRecipe(name);
-                    if (existingRecipe == null){
-                        Recipe newRecipe = new Recipe(name, cuisine, prepMinutes, servings, isVegetarian);
 
-                        Recipe.recipeCookBook.add(newRecipe);
+
+
+                    // Check for duplicate recipe name
+                    Recipe existingRecipe = C1.searchRecipe(name);
+
+
+                    if (existingRecipe == null) {
+
+
+                        Recipe newRecipe = new Recipe(
+                                name,
+                                cuisine,
+                                prepMinutes,
+                                servings,
+                                isVegetarian
+                        );
+
+
+                        C1.addRecipe(newRecipe);
+
+
                         System.out.println("Recipe created!");
-                    }else{
-                        System.out.println("A recipe with this name already exists, try again: (Type 1) ");
+
+
+                    } else {
+
+
+                        System.out.println(
+                                "A recipe with this name already exists. Try again."
+                        );
                     }
 
-                    //recipe made
+
                     break;
 
-                case 2:
-                    // View recipes
-                    //TODO HERE
 
-                    // TODO i want to make is so only when the user does this case, they are then prompted for an option to like seperate the recipes i nto if the are vegetarian or not
-                   System.out.println("Would you like to filter the recipes?");
+
+
+
+
+                case 2:
+
+
+                    if (C1.getRecipes().isEmpty()) {
+
+
+                        System.out.println("You don't have any recipes yet.");
+                        break;
+                    }
+
+
+                    System.out.println("Would you like to filter the recipes?");
                     System.out.println("1 ~ Vegetarian");
                     System.out.println("2 ~ Non-vegetarian");
                     System.out.println("3 ~ View all recipes");
-                    choice = input.nextInt();
-                    if (choice == 1){
 
 
-
-                        System.out.println();
-                    }
-                    if (choice == 2){
-
-
-
-                        System.out.println();
-                    }
-                    if (choice == 3){
-
-
-                        System.out.println();
+                    while (!input.hasNextInt()) {
+                        System.out.println("Invalid input. Please enter 1, 2, or 3.");
+                        input.next();
                     }
 
 
+                    int filterChoice = input.nextInt();
+                    input.nextLine();
 
-                    if (Recipe.recipeCookBook.isEmpty()) {
-                        System.out.println("You don't have any recipes yet.");
-                    } else {
-                        for (Recipe recipe : Recipe.recipeCookBook) {
+
+
+
+                    if (filterChoice == 1) {
+
+
+                        var vegetarianRecipes = C1.filterVegetarian(true);
+
+
+                        if (vegetarianRecipes.isEmpty()) {
+
+
+                            System.out.println("No vegetarian recipes found.");
+
+
+                        } else {
+
+
+                            for (Recipe recipe : vegetarianRecipes) {
+                                System.out.println(recipe);
+                            }
+                        }
+
+
+
+
+                    } else if (filterChoice == 2) {
+
+
+                        var nonVegetarianRecipes = C1.filterVegetarian(false);
+
+
+                        if (nonVegetarianRecipes.isEmpty()) {
+
+
+                            System.out.println("No non-vegetarian recipes found.");
+
+
+                        } else {
+
+
+                            for (Recipe recipe : nonVegetarianRecipes) {
+                                System.out.println(recipe);
+                            }
+                        }
+
+
+
+
+                    } else if (filterChoice == 3) {
+
+
+                        for (Recipe recipe : C1.getRecipes()) {
                             System.out.println(recipe);
+                        }
+
+
+
+
+                    } else {
+
+
+                        System.out.println(
+                                "Invalid option. Please choose 1, 2, or 3."
+                        );
+                    }
+
+
+                    break;
+
+
+
+
+
+
+                case 3:
+
+
+                    System.out.println("What recipe are you looking for?: ");
+
+
+                    String search = input.nextLine().trim();
+
+
+                    Recipe searchResult = C1.searchRecipe(search);
+
+
+                    if (searchResult == null) {
+
+
+                        System.out.println(
+                                "Invalid input - Recipe not found."
+                        );
+
+
+                    } else {
+
+
+                        System.out.println(searchResult);
+                    }
+
+
+                    break;
+
+
+
+
+
+
+                case 4:
+
+
+                    System.out.println("What recipe would you like to modify?: ");
+
+
+                    String modifyName = input.nextLine().trim();
+
+
+                    Recipe recipeToModify = C1.searchRecipe(modifyName);
+
+
+
+
+                    if (recipeToModify == null) {
+
+
+                        System.out.println("Recipe not found.");
+
+
+                    } else {
+
+
+                        System.out.println("What would you like to change?");
+                        System.out.println("1 ~ Change servings");
+                        System.out.println("2 ~ Scale recipe");
+
+
+                        while (!input.hasNextInt()) {
+
+
+                            System.out.println(
+                                    "Invalid input. Please enter 1 or 2."
+                            );
+
+
+                            input.next();
+                        }
+
+
+                        int modifyChoice = input.nextInt();
+
+
+
+
+                        if (modifyChoice == 1) {
+
+
+                            System.out.println(
+                                    "How many servings would you like?"
+                            );
+
+
+                            while (!input.hasNextInt()) {
+
+
+                                System.out.println(
+                                        "Invalid input. Please enter a number."
+                                );
+
+
+                                input.next();
+                            }
+
+
+                            int newServings = input.nextInt();
+
+
+                            recipeToModify.setServings(newServings);
+
+
+                            System.out.println("Servings updated!");
+                            System.out.println(recipeToModify);
+
+
+
+
+                        } else if (modifyChoice == 2) {
+
+
+                            System.out.println(
+                                    "How many servings would you like to scale the recipe to?"
+                            );
+
+
+                            while (!input.hasNextInt()) {
+
+
+                                System.out.println(
+                                        "Invalid input. Please enter a number."
+                                );
+
+
+                                input.next();
+                            }
+
+
+                            int newServings = input.nextInt();
+
+
+                            recipeToModify.scaleTo(newServings);
+
+
+                            System.out.println("Recipe scaled!");
+                            System.out.println(recipeToModify);
+
+
+
+
+                        } else {
+
+
+                            System.out.println(
+                                    "Invalid option. Please choose 1 or 2."
+                            );
                         }
                     }
 
 
                     break;
 
-                 case 3:
-                     //search recipe by name
-                System.out.println("What recipe are you looking for?: ");
-                String search = input.nextLine().trim();
 
-                Recipe searchResult = R1.searchRecipe(search);
-                if (searchResult == null){
-                    System.out.println("Invalid input - Recipe not found ~ Type 3 to search again ");
 
-                }else {
-                    System.out.println(searchResult);
-                }
 
-                break;
 
-                case 4:
-                //Exit
 
-                running = false;
-                System.out.println("Goodbye!");
+                case 5:
 
-                break;
+
+                    System.out.println(
+                            "What recipe would you like to remove?: "
+                    );
+
+
+                    String removeName = input.nextLine().trim();
+
+
+                    if (C1.removeRecipe(removeName)) {
+
+
+                        System.out.println("Recipe removed!");
+
+
+                    } else {
+
+
+                        System.out.println("Recipe not found.");
+                    }
+
+
+                    break;
+
+
+
+
+
+
+
+
+
+
+                case 6:
+
+
+                    running = false;
+
+
+                    System.out.println("Goodbye!");
+
+
+                    break;
+
+
+
+
+
 
                 default:
-                // TODO always check to make sure this print linhe is correct, (1, 2, 3, 4, ....)
-                System.out.println("Invalid option. Please choose 1, 2, 3, or 4.");
 
+
+                    System.out.println(
+                            "Invalid option. Please choose 1, 2, 3, 4, 5, or 6."
+                    );
             }
-
         }
+
+
+
 
         input.close();
-
-        }
     }
+}
+

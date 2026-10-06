@@ -1,7 +1,11 @@
-import java.util.ArrayList;
+
+
+
 
 public class Recipe {
-    //instances
+
+
+    // instances
     private String name;
     private String cuisine;
     private int prepMinutes;
@@ -9,46 +13,64 @@ public class Recipe {
     private boolean isVegetarian;
 
 
-    //constructors
-    public Recipe(String name, String cuisine, int prepMinutes, int servings, boolean isVegetarian){
-        //this.wtv
+    // constructor
+    public Recipe(String name, String cuisine, int prepMinutes, int servings, boolean isVegetarian) {
         this.name = name;
         this.cuisine = cuisine;
         this.prepMinutes = prepMinutes;
         this.servings = servings;
         this.isVegetarian = isVegetarian;
-
-    }
-    public static ArrayList<Recipe> recipeCookBook = new ArrayList<>();
-    //methods
-    public void scaleTo(int newServings){
-        //adjust sevings count
-    }
-
-    public void setServings(int amount){
-        //update servings, but never below 1
-    }
-
-    //getters setters
-    //getter
-    public String getName(){
-    return name;
     }
 
 
+    // collection of recipes
+    //moved to cookbook
+    // public static ArrayList<Recipe> recipeCookBook = new ArrayList<>();
 
-    //search method
-    public Recipe searchRecipe(String search) {
-        for (Recipe recipe : Recipe.recipeCookBook) {
-            if (search.equalsIgnoreCase(recipe.getName())) {
-                return recipe;
-            }
 
+    // methods
+
+
+    public void scaleTo(int newServings) {
+        if (newServings >= 1) {
+            servings = newServings;
         }
-        return null;
     }
 
-    public String toString(){
-        return "Recipe Name: " + name + ", Cuisine: " + cuisine + ", Prep Minutes: " + prepMinutes + ", Servings: " + servings + ", Vegetarian?: " + isVegetarian;
+
+    public void setServings(int amount) {
+        if (amount >= 1) {
+            servings = amount;
+        }
+    }
+
+
+    // getter
+    public String getName() {
+        return name;
+    }
+
+
+    public boolean isVegetarian() {
+        return isVegetarian;
+    }
+
+
+    // compares prep time with another Recipe
+    public boolean isFasterThan(Recipe other) {
+        return this.prepMinutes < other.prepMinutes;
+    }
+
+
+
+
+    // toString
+    public String toString() {
+        return "Recipe Name: " + name
+                + ", Cuisine: " + cuisine
+                + ", Prep Minutes: " + prepMinutes
+                + ", Servings: " + servings
+                + ", Vegetarian?: " + isVegetarian;
     }
 }
+
