@@ -1,1 +1,1 @@
-This is a recipe collector in which you can make a new r, storre, search, alter, and display many recipesNOT DONE
+This is a recipe collector in which you can create, view, search, modify, and remove a list of recipes. The parameters/what is being tracked for a recipe is the recipe name, the cuisine, how many minutes of prep, how many servings, and if it is vegetarian or not.
